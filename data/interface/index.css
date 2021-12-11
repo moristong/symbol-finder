@@ -295,6 +295,10 @@ body {
   display: block;
 }
 
+html[context='webapp'] body {
+  width: 100%;
+}
+
 html[context='webapp'] #explore, 
 html[context='webapp'] .toolbar {
   display: none;
