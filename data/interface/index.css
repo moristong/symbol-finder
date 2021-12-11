@@ -14,6 +14,7 @@ body {
   overflow: hidden;
   text-align: center;
   font-family: monospace;
+  background-color: #fff;
 }
 
 .content {
