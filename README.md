@@ -7,7 +7,7 @@ By default, only the most common symbols are loaded. If you want to load all 650
 You can install this app as a PWA on your mobile device, moreover, it is available as a browser extension as-well-as a web application:
 
 Chrome: https://chrome.google.com/webstore/detail/symbol-finder/jkkcdhfbndheafipanegbnmhledmdcjj  
-Edge:
+Edge:  
 Firefox: https://addons.mozilla.org/en-US/firefox/addon/symbol-finder/  
 Opera: https://addons.opera.com/en/extensions/details/symbol-finder/  
 Webapp & PWA: https://webbrowsertools.com/symbol-finder/  
