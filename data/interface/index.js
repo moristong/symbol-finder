@@ -138,7 +138,7 @@ var config  = {
     var count = 0;
     var extra = document.getElementById("extra");
     var select = document.getElementById("symbol-select");
-    var resources = chrome.runtime.getURL("data/interface/resources/");
+    var resources = chrome.runtime.getURL("/data/interface/resources/");
     /*  */
     var loop = function (count) {
       var key = "range " + count * 1000 + '-' +  (count + 1) * 1000;
@@ -267,8 +267,8 @@ var config  = {
       }, 300);
     },
     "start": function () {
-      var map = chrome.runtime.getURL("data/interface/" + config.path.map);
-      var name = chrome.runtime.getURL("data/interface/" + config.path.name);
+      var map = chrome.runtime.getURL("/data/interface/" + config.path.map);
+      var name = chrome.runtime.getURL("/data/interface/" + config.path.name);
       /*  */
       config.http.request(map, function (e) {
         if (e) {
