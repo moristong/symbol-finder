@@ -1,0 +1,33 @@
+{
+  "version": "0.1.1",
+  "manifest_version": 3,
+  "name": "Symbol Finder",
+  "offline_enabled": true,
+  "permissions": ["storage"],
+  "short_name": "symbol-finder",
+  "homepage_url": "https://mybrowseraddon.com/symbol-finder.html",
+  "description": "Easily find & copy any HTML5 symbol(s) from your browser toolbar popup UI",
+  "commands": {
+    "_execute_action": {}
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_title": "Symbol Finder",
+    "default_popup": "data/interface/index.html?popup",
+    "default_icon": {
+      "16": "data/icons/16.png",
+      "32": "data/icons/32.png",
+      "48": "data/icons/48.png",
+      "64": "data/icons/64.png"
+    }
+  },
+  "icons": {
+    "16": "data/icons/16.png",
+    "32": "data/icons/32.png",
+    "48": "data/icons/48.png",
+    "64": "data/icons/64.png",
+    "128": "data/icons/128.png"
+  }
+}
