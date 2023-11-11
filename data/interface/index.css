@@ -9,8 +9,8 @@ body {
   border: 0;
   padding: 0;
   margin: auto;
-  width: 750px;
-  font-size: 12px;
+  width: 790px;
+  font-size: 13px;
   overflow: hidden;
   text-align: center;
   font-family: monospace;
@@ -90,7 +90,7 @@ body {
 #category {
   left: 0;
   top: 48px;
-  font-size: 12px;
+  font-size: 13px;
   position: absolute;
   border-spacing: 5px;
   background-color: #fff;
@@ -147,7 +147,8 @@ body {
   width: 100%;
   height: 42px;
   outline: none;
-  font-size: 12px;
+  font-size: 13px;
+  font-weight: 600;
   text-indent: 10px;
   font-family: monospace;
   box-sizing: border-box;
@@ -162,11 +163,12 @@ body {
 
 #search #find {
   color: #fff;
-  width: 92px;
-  font-size: 12px;
-  max-width: 92px;
-  min-width: 92px;
+  width: 110px;
+  font-size: 13px;
   cursor: pointer;
+  max-width: 110px;
+  min-width: 110px;
+  font-weight: 600;
   user-select: none;
   background-color: #4d90fe;
   box-shadow: 0 21px 0 rgba(255, 255, 255, 0.15) inset;
@@ -189,8 +191,9 @@ body {
   height: 42px;
   outline: none;
   cursor: pointer;
-  font-size: 12px;
+  font-size: 13px;
   text-indent: 5px;
+  font-weight: 600;
   user-select: none;
   font-family: monospace;
   vertical-align: middle;
@@ -218,7 +221,7 @@ body {
   padding: 0;
   color: #333;
   outline: none;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 600;
   text-align: center;
   font-family: monospace;
@@ -245,7 +248,7 @@ body {
 #extra, #toggle {
   color: #777;
   width: 42px;
-  font-size: 12px;
+  font-size: 13px;
   cursor: pointer;
   user-select: none;
   text-align: center;

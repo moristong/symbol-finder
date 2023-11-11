@@ -1,10 +1,9 @@
 {
-  "version": "0.1.1",
+  "version": "0.1.2",
   "manifest_version": 3,
   "name": "Symbol Finder",
   "offline_enabled": true,
   "permissions": ["storage"],
-  "short_name": "symbol-finder",
   "homepage_url": "https://mybrowseraddon.com/symbol-finder.html",
   "description": "Easily find & copy any HTML5 symbol(s) from your browser toolbar popup UI",
   "commands": {

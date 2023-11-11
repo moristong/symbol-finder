@@ -80,8 +80,8 @@ window.setTimeout(function () {
       if (id && title) {
         const a = document.createElement('a');
         const td = document.createElement('td');
-        const short = chrome.runtime.getManifest().short_name;
         const homepage = chrome.runtime.getManifest().homepage_url;
+        const short = homepage.split('/').pop().split('.').shift();
         const url = homepage.split('/').slice(0, -1).join('/') + '/';
         a.href = url + id + ".html?context=explore&from=" + short;
         a.setAttribute("title", title);

@@ -1,20 +1,30 @@
 var background = (function () {
-  var tmp = {};
+  let tmp = {};
   if (chrome && chrome.runtime && chrome.runtime.onMessage) {
     chrome.runtime.onMessage.addListener(function (request) {
-      for (var id in tmp) {
+      for (let id in tmp) {
         if (tmp[id] && (typeof tmp[id] === "function")) {
           if (request.path === "background-to-popup") {
-            if (request.method === id) tmp[id](request.data);
+            if (request.method === id) {
+              tmp[id](request.data);
+            }
           }
         }
       }
     });
     /*  */
     return {
-      "receive": function (id, callback) {tmp[id] = callback},
+      "receive": function (id, callback) {
+        tmp[id] = callback;
+      },
       "send": function (id, data) {
-        chrome.runtime.sendMessage({"path": "popup-to-background", "method": id, "data": data});
+        chrome.runtime.sendMessage({
+          "method": id, 
+          "data": data,
+          "path": "popup-to-background"
+        }, function () {
+          return chrome.runtime.lastError;
+        });
       }
     }
   } else {
@@ -38,14 +48,14 @@ var config  = {
   "copy": function (e) { 
     e.preventDefault();
     /*  */
-    var tmp = document.getElementById("symbol-icon").value;
+    const tmp = document.getElementById("symbol-icon").value;
     if (tmp) {
       e.clipboardData.setData("text/plain", tmp);
     }
   },
   "http": {
     "request": function (url, callback) {
-      var xhr = new XMLHttpRequest();
+      const xhr = new XMLHttpRequest();
       xhr.onload = function () {callback(xhr.response)};
       xhr.open("GET", url, true);
       xhr.responseType = "json";
@@ -56,7 +66,7 @@ var config  = {
     "option": {
       "to": {
         "select": function (txt, val, select) {
-          var option = document.createElement("option");
+          const option = document.createElement("option");
           option.setAttribute("value", val);
           option.textContent = txt;
           select.appendChild(option);
@@ -90,7 +100,7 @@ var config  = {
     "name": '',
     "connect": function () {
       config.port.name = "webapp";
-      var context = document.documentElement.getAttribute("context");
+      const context = document.documentElement.getAttribute("context");
       /*  */
       if (chrome.runtime) {
         if (chrome.runtime.connect) {
@@ -123,7 +133,7 @@ var config  = {
     "write": function (id, data) {
       if (id) {
         if (data !== '' && data !== null && data !== undefined) {
-          var tmp = {};
+          let tmp = {};
           tmp[id] = data;
           config.storage.local[id] = data;
           chrome.storage.local.set(tmp, function () {});
@@ -135,19 +145,19 @@ var config  = {
     }
   },
   "extra": function () {
-    var count = 0;
-    var extra = document.getElementById("extra");
-    var select = document.getElementById("symbol-select");
-    var resources = chrome.runtime.getURL("/data/interface/resources/");
+    let count = 0;
+    const extra = document.getElementById("extra");
+    const select = document.getElementById("symbol-select");
+    const resources = chrome.runtime.getURL("/data/interface/resources/");
     /*  */
-    var loop = function (count) {
-      var key = "range " + count * 1000 + '-' +  (count + 1) * 1000;
-      var add = select.querySelector('[value="' + key + '"]') === null;
+    let loop = function (count) {
+      const key = "range " + count * 1000 + '-' +  (count + 1) * 1000;
+      const add = select.querySelector('[value="' + key + '"]') === null;
       if (add) {
         config.symbol.base[key] = [];
         config.add.option.to.select(key, key, select);
         config.http.request(resources + (count + ".json"), function (e) {
-          for (var i = 0; i < e.length; i++) {
+          for (let i = 0; i < e.length; i++) {
             config.symbol.list.push(e[i].code);
             config.symbol.base[key].push(e[i].code);
           }
@@ -172,23 +182,23 @@ var config  = {
   },
   "app": {
     "fill": function (keyword) {
-      var arr = [];
-      var tmp = [];
+      let arr = [];
+      let tmp = [];
       /*  */
       keyword = keyword ? keyword.toLowerCase() : '';
       config.storage.write("symbol.keyword", keyword.indexOf("range") !== -1 ? '' : keyword);
       /*  */
-      var find = document.getElementById("find");
-      var table = document.getElementById("symbol");
-      var select = document.getElementById("symbol-select");
+      const find = document.getElementById("find");
+      const table = document.getElementById("symbol");
+      const select = document.getElementById("symbol-select");
       /*  */
       if (keyword && keyword !== "all symbols") {
         if (config.symbol.base[keyword]) {
           select.value = keyword;
           arr = config.symbol.base[keyword];
         } else {
-          for (var key in config.symbol.name) {
-            var name = config.symbol.name[key].toLowerCase();
+          for (let key in config.symbol.name) {
+            let name = config.symbol.name[key].toLowerCase();
             if (name.indexOf(keyword) !== -1) {
               tmp.push(key);
             }
@@ -207,12 +217,12 @@ var config  = {
       /*  */
       window.setTimeout(function () {
         if (arr.length) {
-          var count = 0;
+          let count = 0;
           while (count < arr.length) {
-            var tr = document.createElement("tr");
-            for (var i = 0; i < 10; i++) {
+            const tr = document.createElement("tr");
+            for (let i = 0; i < 10; i++) {
               if (count < arr.length) {
-                var td = document.createElement("td");
+                const td = document.createElement("td");
                 /*  */
                 td.setAttribute("code", arr[count]);
                 td.setAttribute("dec", arr[count].split(',').map(e => config.convert.dec.to.dec(e)).join(''));
@@ -223,15 +233,15 @@ var config  = {
                 /*  */
                 td.textContent = td.getAttribute("symbol");
                 /*  */
-                td.addEventListener("click", function (e) {
-                  var dec = e.target.getAttribute("dec");
-                  var code = e.target.getAttribute("code");
-                  var name = e.target.getAttribute("name");
-                  var unicode = e.target.getAttribute("unicode");
+                td.addEventListener("click", async function (e) {
+                  const dec = e.target.getAttribute("dec");
+                  const code = e.target.getAttribute("code");
+                  const name = e.target.getAttribute("name");
+                  const unicode = e.target.getAttribute("unicode");
                   /*  */
-                  var icon = document.getElementById("symbol-icon");
-                  var detail = document.getElementById("symbol-detail");
-                  var search = document.getElementById("symbol-search");
+                  const icon = document.getElementById("symbol-icon");
+                  const detail = document.getElementById("symbol-detail");
+                  const search = document.getElementById("symbol-search");
                   /*  */
                   icon.value = e.target.textContent;
                   if (e.isTrusted) search.value = name;
@@ -239,7 +249,10 @@ var config  = {
                   detail.value = " Dec: " + dec + " Unicode: " + unicode + " Name: " + name;
                   /*  */
                   config.storage.write("symbol.code", code);
-                  document.execCommand('copy');
+                  const result = await navigator.permissions.query({"name": "clipboard-write"});
+                  if (e.isTrusted && result.state === "granted") {
+                    navigator.clipboard.writeText(code);
+                  }
                 });
                 /*  */
                 tr.appendChild(td);
@@ -251,10 +264,10 @@ var config  = {
           }
           /*  */
           window.setTimeout(function () {
-            var symbol = document.getElementById("symbol");
-            var selector = "td[code='" + config.symbol.selected + "']";
+            const symbol = document.getElementById("symbol");
+            const selector = "td[code='" + config.symbol.selected + "']";
             /*  */
-            var target = document.querySelector(selector);
+            const target = document.querySelector(selector);
             if (target) {
               target.click();
             } else {
@@ -267,8 +280,8 @@ var config  = {
       }, 300);
     },
     "start": function () {
-      var map = chrome.runtime.getURL("/data/interface/" + config.path.map);
-      var name = chrome.runtime.getURL("/data/interface/" + config.path.name);
+      const map = chrome.runtime.getURL("/data/interface/" + config.path.map);
+      const name = chrome.runtime.getURL("/data/interface/" + config.path.name);
       /*  */
       config.http.request(map, function (e) {
         if (e) {
@@ -279,33 +292,33 @@ var config  = {
               config.symbol.name = {};
               config.symbol.list = [];
               /*  */
-              for (var i = 0; i < e.length; i++) {
+              for (let i = 0; i < e.length; i++) {
                 config.symbol.name[e[i].dec] = e[i].name;
               }
               /*  */
-              for (var id in config.symbol.json) {
-                var tmp = config.symbol.json[id];
+              for (let id in config.symbol.json) {
+                const tmp = config.symbol.json[id];
                 /*  */
                 id = id.toLowerCase();
                 config.symbol.base[id] = [];
-                for (var i = 0; i < tmp.length; i++) {
+                for (let i = 0; i < tmp.length; i++) {
                   config.symbol.list.push(tmp[i].code);
                   config.symbol.base[id].push(tmp[i].code);
                 }
               }
               /*  */
-              var all = document.getElementById("all");
-              var find = document.getElementById("find");
-              var extra = document.getElementById("extra");
-              var select = document.createElement("select");
-              var toggle = document.getElementById("toggle");
-              var support = document.getElementById("support");
-              var category = document.getElementById("category");
-              var donation = document.getElementById("donation");
-              var buttons = [...category.querySelectorAll("td")];
-              var container = document.querySelector(".container");
-              var search = document.getElementById("symbol-search");
-              var state = config.storage.read("symbol.toggle") !== undefined ? config.storage.read("symbol.toggle") : "hide";
+              const all = document.getElementById("all");
+              const find = document.getElementById("find");
+              const extra = document.getElementById("extra");
+              const select = document.createElement("select");
+              const toggle = document.getElementById("toggle");
+              const support = document.getElementById("support");
+              const category = document.getElementById("category");
+              const donation = document.getElementById("donation");
+              const buttons = [...category.querySelectorAll("td")];
+              const container = document.querySelector(".container");
+              const search = document.getElementById("symbol-search");
+              const state = config.storage.read("symbol.toggle") !== undefined ? config.storage.read("symbol.toggle") : "hide";
               /*  */
               toggle.setAttribute("state", state);
               category.setAttribute("state", state);
@@ -315,10 +328,10 @@ var config  = {
               /*  */
               config.add.option.to.select("Select", '', select);
               config.add.option.to.select("All", "all symbols", select);
-              for (var id in config.symbol.base) config.add.option.to.select(id, id, select);
+              for (let id in config.symbol.base) config.add.option.to.select(id, id, select);
               all.appendChild(select);
               /*  */
-              for (var i = 0; i < buttons.length; i++) {
+              for (let i = 0; i < buttons.length; i++) {
                 buttons[i].addEventListener("click", function (e) {
                   config.app.fill(e.target.getAttribute("id"));
                 });
@@ -330,13 +343,13 @@ var config  = {
               });
               /*  */
               search.addEventListener("keypress", function (e) {
-                if ((e.which || e.keyCode) === 13) {
+                if (e.code === 13) {
                   config.app.fill(e.target.value);
                 }
               });
               /*  */
               toggle.addEventListener("click", function () {
-                var state = toggle.getAttribute("state") === "hide" ? "show" : "hide";
+                const state = toggle.getAttribute("state") === "hide" ? "show" : "hide";
                 /*  */
                 toggle.setAttribute("state", state);
                 category.setAttribute("state", state);
