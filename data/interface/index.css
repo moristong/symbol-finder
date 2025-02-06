@@ -82,7 +82,7 @@ body {
 }
 
 .toolbar table tr td svg {
-  fill: #777;
+  fill: #555;
   pointer-events: none;
   vertical-align: middle;
 }
@@ -121,7 +121,7 @@ body {
 
 #symbol {
   height: auto;
-  font-size: 24px;
+  font-size: 32px;
   font-family: monospace;
 }
 
@@ -129,6 +129,11 @@ body {
   height: auto;
   padding: 10px 0;
   cursor: pointer;
+  transition: 300ms ease background-color;
+}
+
+#symbol tr td[selected] {
+  background-color: rgba(0,0,0,0.05);
 }
 
 #symbol tr td:hover {
@@ -164,7 +169,7 @@ body {
 #search #find {
   color: #fff;
   width: 110px;
-  font-size: 13px;
+  font-size: 14px;
   cursor: pointer;
   max-width: 110px;
   min-width: 110px;
@@ -221,7 +226,7 @@ body {
   padding: 0;
   color: #333;
   outline: none;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
   text-align: center;
   font-family: monospace;

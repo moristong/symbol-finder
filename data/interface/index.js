@@ -234,10 +234,12 @@ var config  = {
                 td.textContent = td.getAttribute("symbol");
                 /*  */
                 td.addEventListener("click", async function (e) {
+                  const table = e.target.closest("table");
                   const dec = e.target.getAttribute("dec");
                   const code = e.target.getAttribute("code");
                   const name = e.target.getAttribute("name");
                   const unicode = e.target.getAttribute("unicode");
+                  const selected = [...table.querySelectorAll("td[selected]")];
                   /*  */
                   const icon = document.getElementById("symbol-icon");
                   const detail = document.getElementById("symbol-detail");
@@ -245,9 +247,11 @@ var config  = {
                   /*  */
                   icon.value = e.target.textContent;
                   if (e.isTrusted) search.value = name;
+                  selected.map(td => td.removeAttribute("selected"));
                   detail.title = "The symbol is copied to the clipboard!";
                   detail.value = " Dec: " + dec + " Unicode: " + unicode + " Name: " + name;
                   /*  */
+                  e.target.setAttribute("selected", '');
                   config.storage.write("symbol.code", code);
                   const result = await navigator.permissions.query({"name": "clipboard-write"});
                   if (e.isTrusted && result.state === "granted") {
@@ -270,6 +274,11 @@ var config  = {
             const target = document.querySelector(selector);
             if (target) {
               target.click();
+              target.scrollIntoView({
+                "block": "center", 
+                "inline": "center",
+                "behavior": "smooth"
+              });
             } else {
               symbol.querySelector("td").click();
             }
