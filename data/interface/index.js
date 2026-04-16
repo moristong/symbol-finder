@@ -318,6 +318,7 @@ var config  = {
               /*  */
               const all = document.getElementById("all");
               const find = document.getElementById("find");
+              const theme = document.getElementById("theme");
               const extra = document.getElementById("extra");
               const select = document.createElement("select");
               const toggle = document.getElementById("toggle");
@@ -357,6 +358,14 @@ var config  = {
                 }
               });
               /*  */
+              theme.addEventListener("click", function () {
+                let attribute = document.documentElement.getAttribute("theme");
+                attribute = attribute === "dark" ? "light" : "dark";
+                /*  */
+                document.documentElement.setAttribute("theme", attribute);
+                config.storage.write("symbol.theme", attribute);
+              });
+              /*  */
               toggle.addEventListener("click", function () {
                 const state = toggle.getAttribute("state") === "hide" ? "show" : "hide";
                 /*  */
@@ -377,6 +386,7 @@ var config  = {
               if (navigator.userAgent.indexOf("Edg") !== -1) document.getElementById("explore").style.display = "none";
               search.value = config.storage.read("symbol.keyword") !== undefined ? config.storage.read("symbol.keyword") : "arrow";
               config.symbol.selected = config.storage.read("symbol.code") !== undefined ? config.storage.read("symbol.code") : "&#8594;";
+              document.documentElement.setAttribute("theme", config.storage.read("symbol.theme") !== undefined ? config.storage.read("symbol.theme") : "light");
               /*  */
               config.app.fill(search.value);
             }
